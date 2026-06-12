@@ -1,6 +1,6 @@
 -- username: simone
 -- password: password
-INSERT INTO users (username, password_hash, salt, best_score) VALUES ('simone', 'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 'e52475d49a4b4f071ebacdb3dcd5318e', 100);
+INSERT INTO users (username, password_hash, salt, bestScore) VALUES ('simone', 'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 'e52475d49a4b4f071ebacdb3dcd5318e', 100);
 
 
 INSERT INTO stations (stationId, name) VALUES (1, 'Coolmine');

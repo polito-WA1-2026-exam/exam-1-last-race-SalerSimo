@@ -33,5 +33,5 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     salt TEXT NOT NULL,
-    best_score INTEGER
+    bestScore INTEGER
 );
