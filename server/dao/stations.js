@@ -48,5 +48,19 @@ export default class StationDAO {
         });
     };
 
+    getSegments() {
+        const query = `
+            SELECT station1Id, station2Id, s1.name AS station1Name, s2.name AS station2Name FROM segments, stations s1, stations s2
+            WHERE segments.station1Id = s1.stationId AND segments.station2Id = s2.stationId;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.all(query, (err, rows) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(rows);
+            });
+        });
+    }
 
 }

@@ -154,6 +154,11 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
     res.json({ events: result });
 });
 
+app.get("/api/segments", isLoggedIn, async (req, res) => {
+    const segments = await stationDAO.getSegments();
+    res.json(segments);
+});
+
 app.get("/api/scoreboard", isLoggedIn, async (req, res) => {
     const scoreboard = await userDAO.getScoreboard();
     res.json(scoreboard);
