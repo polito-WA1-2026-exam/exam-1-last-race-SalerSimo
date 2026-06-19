@@ -3,9 +3,12 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import LocalStrategy from "passport-local";
-import crypto from "crypto";
 import morgan from "morgan";
 import db, { initDatabase } from "./db.js";
+import MetroNetwork from "./metro.js";
+import StationDAO from "./dao/stations.js";
+import EventDAO from "./dao/events.js";
+import UserDAO from "./dao/users.js";
 
 // init express
 const app = new express();
@@ -14,30 +17,16 @@ const port = 3001;
 app.use(express.json());
 app.use(morgan('dev'));
 
-passport.use(new LocalStrategy(async (username, password, callback) => {
-    const user = await new Promise((resolve, reject) => {
-        db.get("SELECT * FROM users WHERE username = ?", [username], (err, row) => {
-            if (err) {
-                return reject(err);
-            }
-            else if (!row) {
-                return resolve(false);
-            }
-            else {
-                const user = { id: row.userId, username: row.username, bestScore: row.best_score };
+await initDatabase();
+const metroNetwork = await new MetroNetwork();
+await metroNetwork.buildNetwork();
+const stationDAO = new StationDAO(db);
+const eventDAO = new EventDAO(db);
+const userDAO = new UserDAO(db);
 
-                crypto.scrypt(password, row.salt, 64, (err, derivedKey) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    if (crypto.timingSafeEqual(derivedKey, Buffer.from(row.password_hash, "hex"))) {
-                        return resolve(user);
-                    }
-                    resolve(false);
-                });
-            }
-        });
-    });
+
+passport.use(new LocalStrategy(async (username, password, callback) => {
+    const user = await userDAO.getUserByCredentials(username, password);
     if (!user) {
         return callback(null, false, { message: "Incorrect username or password." });
     }
@@ -103,7 +92,73 @@ app.delete('/api/sessions/current', (req, res) => {
 });
 
 
-await initDatabase();
+app.get("/api/game/start", isLoggedIn, async (req, res) => {
+    const minDistance = 3;
+    const result = metroNetwork.getRandomStartAndDestination(minDistance);
+    if (!result) {
+        return res.status(500).json({ error: "Could not find valid start and destination stations." });
+    }
+    const { start, destination } = result;
+    req.session.start = start;
+    req.session.destination = destination;
+    const startName = await stationDAO.getStationName(start);
+    const destinationName = await stationDAO.getStationName(destination);
+    res.json({ startID: start, start: startName, destinationID: destination, destination: destinationName });
+});
+
+app.post("/api/game/submit", isLoggedIn, async (req, res) => {
+    const route = req.body.route;
+    if (!req.session.start || !req.session.destination) {
+        return res.status(400).json({ error: "Game not properly initialized." });
+    }
+    const start = parseInt(req.session.start);
+    const destination = parseInt(req.session.destination);
+    req.session.start = null;
+    req.session.destination = null;
+    if (!route) {
+        return res.status(400).json({ error: "Invalid route." });
+    }
+    const stations = metroNetwork.validateRoute(route, start, destination);
+    if (!stations) {
+        return res.status(400).json({ error: "Invalid route." });
+    }
+
+    let score = 150;
+    const events = await eventDAO.getEvents();
+    const result = []
+    for (let i = 1; i < stations.length; i++) {
+        const station1Id = stations[i - 1];
+        const station2Id = stations[i];
+        const randomIndex = Math.floor(Math.random() * events.length);
+        const randomEvent = events[randomIndex];
+        if (randomEvent) {
+            score += randomEvent.effect;
+        }
+        const station1Name = await stationDAO.getStationName(station1Id);
+        const station2Name = await stationDAO.getStationName(station2Id);
+
+        result.push({
+            station1: station1Name,
+            station2: station2Name,
+            event: randomEvent ? { description: randomEvent.description, effect: randomEvent.effect } : null,
+            currentScore: score
+        });
+    }
+
+    const userId = req.user.id;
+    const currentBestScore = await userDAO.getScoreById(userId);
+    if (!currentBestScore || score > currentBestScore.bestScore) {
+        await userDAO.updateBestScore(userId, score);
+    }
+
+    res.json({ events: result });
+});
+
+app.get("/api/scoreboard", isLoggedIn, async (req, res) => {
+    const scoreboard = await userDAO.getScoreboard();
+    res.json(scoreboard);
+});
+
 // activate the server
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
