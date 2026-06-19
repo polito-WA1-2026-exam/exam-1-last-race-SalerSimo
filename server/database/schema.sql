@@ -35,3 +35,11 @@ CREATE TABLE IF NOT EXISTS users (
     salt TEXT NOT NULL,
     bestScore INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS events (
+    eventId INTEGER PRIMARY KEY AUTOINCREMENT,
+    description TEXT NOT NULL,
+    effect integer NOT NULL,
+
+    CHECK (effect >= -4 AND effect <= 4)
+)

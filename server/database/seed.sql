@@ -1,6 +1,7 @@
 -- username: simone
 -- password: password
-INSERT INTO users (username, password_hash, salt, bestScore) VALUES ('simone', 'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 'e52475d49a4b4f071ebacdb3dcd5318e', 100);
+INSERT INTO users (username, password_hash, salt, bestScore) VALUES 
+('simone', 'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 'e52475d49a4b4f071ebacdb3dcd5318e', 100);
 
 
 INSERT INTO stations (stationId, name) VALUES (1, 'Coolmine');
@@ -54,3 +55,14 @@ INSERT INTO line_stations (lineId, stationId) VALUES (4, 4);
 INSERT INTO line_stations (lineId, stationId) VALUES (4, 10);
 INSERT INTO line_stations (lineId, stationId) VALUES (4, 11);
 INSERT INTO line_stations (lineId, stationId) VALUES (4, 12);
+
+INSERT INTO events (description, effect) VALUES
+('Quiet journey, nothing unusual happens', 0),
+('Wrong platform, you miss your train', -2),
+('Kind passenger shares a snack', 1),
+('Ticket inspector finds an expired ticket', -3),
+('You find a coin on the station floor', 1),
+('Train delay gives time to help a traveler', 2),
+('Lost luggage causes inconvenience', -4),
+('Friendly station worker gives useful directions', 2),
+('Lucky escape: the ticket inspector skips your seat', 3);
