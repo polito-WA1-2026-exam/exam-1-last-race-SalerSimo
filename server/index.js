@@ -130,7 +130,7 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
         return res.json({ valid: false, error: "Invalid route." });
     }
 
-    let score = 150;
+    let score = 20;
     const events = await eventDAO.getEvents();
     const result = []
     for (let i = 1; i < stations.length; i++) {
