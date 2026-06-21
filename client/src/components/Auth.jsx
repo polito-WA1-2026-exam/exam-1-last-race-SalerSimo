@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from "prop-types";
+import '../App.css';
 
 
 function LoginForm(props) {
@@ -29,9 +30,10 @@ function LoginForm(props) {
     };
 
     return (
-        <Row className="mt-3 vh-100 justify-content-md-center">
-            <Col md={4} >
-                <h1 className="pb-3">Login</h1>
+        <div className="d-flex justify-content-center align-items-center min-vh-100 p-3">
+            <Card className="login-card shadow rounded-3 p-4 w-100" style={{ maxWidth: 420 }}>
+                <h1 className="h3 text-center mb-1">Welcome back</h1>
+                <p className="text-center text-muted mb-4">Sign in to your account</p>
                 <Form onSubmit={handleSubmit}>
                     <Alert
                         dismissible
@@ -44,7 +46,8 @@ function LoginForm(props) {
                         <Form.Label>Username</Form.Label>
                         <Form.Control
                             type="text"
-                            value={username} placeholder="Enter your username"
+                            value={username}
+                            placeholder="Enter your username"
                             onChange={(ev) => setUsername(ev.target.value)}
                             required={true}
                         />
@@ -53,15 +56,17 @@ function LoginForm(props) {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                             type="password"
-                            value={password} placeholder="Enter the password."
+                            value={password}
+                            placeholder="Enter your password"
                             onChange={(ev) => setPassword(ev.target.value)}
-                            required={true} minLength={6}
+                            required={true}
+                            minLength={6}
                         />
                     </Form.Group>
-                    <Button className="mt-3" type="submit">Login</Button>
+                    <Button type="submit" className="w-100">Sign In</Button>
                 </Form>
-            </Col>
-        </Row>
+            </Card>
+        </div>
     )
 }
 

@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import './App.css';
 import { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap/';
+// import { Container } from 'react-bootstrap/';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { LoginForm } from './components/Auth.jsx';
 import { PublicPage, GamePage, ScoreboardPage } from './components/PageLayout.jsx';
@@ -34,23 +34,21 @@ function App() {
 
 
     return (
-        <div className="min-vh-150 d-flex flex-column">
-            <Container fluid className="flex-grow-1 d-flex flex-column">
-                <Routes>
-                    <Route path="/" element={!loggedIn ? <PublicPage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/game' />} />
-                    <Route path="/login" element={
-                        loggedIn ? <Navigate replace to='/game' />
-                            : <LoginForm login={handleLogin} />
-                    } />
-                    <Route path="/game" element={
-                        loggedIn ? <GamePage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/' />
-                    } />
-                    <Route path="/scoreboard" element={
-                        loggedIn ? <ScoreboardPage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/' />
-                    } />
-                    <Route path="*" element={<Navigate replace to='/' />} />
-                </Routes>
-            </Container>
+        <div className="d-flex flex-column h-100">
+            <Routes>
+                <Route path="/" element={!loggedIn ? <PublicPage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/game' />} />
+                <Route path="/login" element={
+                    loggedIn ? <Navigate replace to='/game' />
+                        : <LoginForm login={handleLogin} />
+                } />
+                <Route path="/game" element={
+                    loggedIn ? <GamePage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/' />
+                } />
+                <Route path="/scoreboard" element={
+                    loggedIn ? <ScoreboardPage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/' />
+                } />
+                <Route path="*" element={<Navigate replace to='/' />} />
+            </Routes>
         </div>
     );
 }

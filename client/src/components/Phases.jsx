@@ -1,35 +1,30 @@
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import { Segment, SegmentHorizontal } from './Metro';
+import { Segment, SegmentHorizontal, MetroMap } from './Metro';
 import { useState, useEffect } from 'react';
+import '../App.css';
 
-function SetupPhase({ onReady }) {
+export function SetupPhase({ onReady }) {
     return (
-        <Container className="py-4">
-            <Row className="mb-3">
-                <Col>
-                    <img src="/src/assets/map_selected_stations.png" alt="Metro Map" className="img-fluid" />
+        <div className="d-flex flex-column justify-content-center align-items-center py-4 h-100 w-100 px-0">
+            <Row className="d-flex w-100 justify-content-center align-items-center">
+                <Col md={8}>
+                    <MetroMap></MetroMap>
                 </Col>
-                <Col>
-                    <h2>Welcome to Race the Rails</h2>
+                <Col md={4}>
                     <p className="text-muted">
                         Study the metro network carefully before starting. You will not see
                         the lines during the planning phase — only the station names.
                     </p>
-                </Col>
-            </Row>
-
-            <Row>
-                <Col>
                     <p className="text-muted fst-italic">
                         Once you press <strong>Start Game</strong>, a starting station
                         and destination will be assigned and the 90-second timer will begin.
                     </p>
-                    <Button variant="success" size="lg" onClick={onReady}>
+                    <Button size="lg" className="btn-accent" onClick={onReady}>
                         Start Game
                     </Button>
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 }
 
@@ -51,7 +46,6 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
         setRoute((prevRoute) => {
             return prevRoute.filter(seg => seg.index !== segment.index);
         });
-
     };
 
     useEffect(() => {
@@ -64,113 +58,155 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
                 onSubmitRoute(route);
             }
         }, 1000);
-
         return () => clearInterval(interval);
     }, [onSubmitRoute, route, remainingTime]);
 
     return (
-        <Container fluid>
-            <div>Go from {assignment?.start} to {assignment?.destination}</div>
-            <div className="d-flex flex-column align-items-center mb-4">
-                {remainingTime}
-            </div>
-            <Row>
+        <Container fluid className="d-flex flex-column py-3">
+            <Row className="align-items-center mb-2 flex-shrink-0">
                 <Col md={8}>
-                    <img src="/src/assets/map_only_stations.png" alt="Metro Map" className="img-fluid" />
+                    <h5 className="mb-0">
+                        Go from <span className="fw-bold">{assignment?.start}</span> to{' '}
+                        <span className="fw-bold">{assignment?.destination}</span>
+                    </h5>
                 </Col>
+                <Col md={4} className="d-flex justify-content-end align-items-center gap-3">
+                    <div className="timer" style={{ background: remainingTime <= 10 ? 'red' : 'green' }}>{remainingTime}</div>
 
-                <Col md={2} className="d-flex flex-column border-top p-0 m-10" id="segments-container">
-                    {segments.map(seg => (
-                        <Segment
-                            key={`${seg.station1Id},${seg.station2Id}`}
-                            station1Id={seg.station1Id}
-                            station1Name={seg.station1Name}
-                            station2Id={seg.station2Id}
-                            station2Name={seg.station2Name}
-                            onClick={() => selectSegment(seg)}
-                        />
-                    ))}
-                </Col>
-
-                <Col md={2} className="d-flex flex-column border-top p-0" id="route-container">
-                    {route.map((seg) => (
-                        <Segment
-                            key={seg.index}
-                            station1Id={seg.station1Id}
-                            station1Name={seg.station1Name}
-                            station2Id={seg.station2Id}
-                            station2Name={seg.station2Name}
-                            onClick={() => deselectSegment(seg)}
-                        />
-                    ))}
+                    <Button onClick={() => onSubmitRoute(route)}>
+                        Submit Route
+                    </Button>
                 </Col>
             </Row>
 
-            <Button variant="primary" className="mt-3" onClick={() => onSubmitRoute(route)}>
-                Submit Route
-            </Button>
+            <Row className="d-flex">
+                <Col md={8}>
+                    <MetroMap showSegments={false}></MetroMap>
+                </Col>
+
+                <Col md={4} className="d-flex h-100 overflow-auto">
+                    <Col md={6} className='pe-2 h-100' id="segments-container">
+                        <Col className="d-flex flex-column border p-0 h-100">
+                            <div className="fw-semibold text-center py-2 border-bottom bg-light flex-shrink-0">Segments</div>
+                            {segments.map(seg => (
+                                <Segment
+                                    key={`${seg.station1Id},${seg.station2Id}`}
+                                    station1Id={seg.station1Id}
+                                    station1Name={seg.station1Name}
+                                    station2Id={seg.station2Id}
+                                    station2Name={seg.station2Name}
+                                    onClick={() => selectSegment(seg)}
+                                />
+                            ))}
+                        </Col>
+                    </Col>
+                    <Col md={6} className='ps-2 h-100' id="route-container">
+                        <Col className="d-flex flex-column border p-0 overflow-scroll h-100">
+                            <div className="fw-semibold text-center py-2 border-bottom bg-light flex-shrink-0">Route</div>
+                            {route.length === 0 ? (
+                                <div className="text-muted text-center py-3 small">Select segments to build your route</div>
+                            ) : (
+                                route.map((seg) => (
+                                    <Segment
+                                        key={seg.index}
+                                        station1Id={seg.station1Id}
+                                        station1Name={seg.station1Name}
+                                        station2Id={seg.station2Id}
+                                        station2Name={seg.station2Name}
+                                        onClick={() => deselectSegment(seg)}
+                                    />
+                                ))
+                            )}
+                        </Col>
+                    </Col>
+                </Col>
+            </Row>
         </Container >
     );
 }
 
 function EventCard({ description, effect }) {
     return (
-        <Container className="p-3 mb-2 bg-light border">
-            <Row>
-                <Col>
-                    <p>{description}</p>
-                </Col>
-                <Col className="text-end">
-                    <p>{effect > 0 ? `+${effect} coins` : `${effect} coins`}</p>
-                </Col>
-            </Row>
-        </Container>
+        <div className="event-card py-4 mx-5 bg-light border rounded-3 text-center">
+            <p className=" fs-5">{description}</p>
+            <div className="d-inline-flex align-items-center gap-2">
+                <span className={`fs-4 fw-bold ${effect >= 0 ? "text-success" : "text-danger"}`}>
+                    {effect >= 0 ? `+${effect}` : effect}
+                </span>
+                <img src="/src/assets/coin.svg" alt="coin" width="28" height="28" />
+            </div>
+        </div>
     );
 };
 
 
-export function ExecutionPhase({ events, valid, onPlayAgain }) {
+export function ExecutionPhase({ events, valid, onSeeResult }) {
     const [currentEventIdx, setCurrentEventIdx] = useState(0);
 
     return (
-        <Container>
+        <Container className="d-flex flex-column justify-content-center gap-4 py-4">
             {!valid && (
                 <Row>
                     <Col>
-                        <p className="text-danger">Invalid route submitted. Your score is 0.</p>
+                        <div className="alert alert-danger">Invalid route submitted. Your score is 0.</div>
                     </Col>
                 </Row>
             )}
             {valid && events.length > 0 && (
-                <Container>
-                    <SegmentHorizontal
-                        station1Name={events[currentEventIdx].station1}
-                        station2Name={events[currentEventIdx].station2}
-                    />
+                <div>
+                    <Row className="mb-4">
+                        <Col className="text-center">
+                            <SegmentHorizontal
+                                station1Name={events[currentEventIdx].station1}
+                                station2Name={events[currentEventIdx].station2}
+                            />
+                        </Col>
+                    </Row>
 
-                    <Col>
-                        <EventCard description={events[currentEventIdx].event?.description || "No event"} effect={events[currentEventIdx].event?.effect || 0} />
-                        <Button variant="primary" disabled={currentEventIdx >= events.length - 1} onClick={() => {
-                            if (currentEventIdx < events.length - 1) {
-                                setCurrentEventIdx(currentEventIdx + 1);
-                            }
-                        }}>
-                            Next
-                        </Button>
-                    </Col>
-                    <p> {currentEventIdx === events.length - 1 ? "Final" : "Current"} Score: {events[currentEventIdx].currentScore}</p>
-                </Container>
-            )}
+                    <Row className="mb-3">
+                        <Col md={6} className="mx-auto">
+                            <EventCard description={events[currentEventIdx].event?.description || "No event"} effect={events[currentEventIdx].event?.effect || 0} />
+                        </Col>
+                    </Row>
 
-            {(!valid || currentEventIdx === events.length - 1) && (
-                <Button variant="success" onClick={onPlayAgain}>
-                    Start New Game
-                </Button>
+                    <Row>
+                        <Col className="text-center">
+                            <Button onClick={() => {
+                                if (currentEventIdx < events.length - 1) {
+                                    setCurrentEventIdx(currentEventIdx + 1);
+                                } else {
+                                    onSeeResult();
+                                }
+                            }}>
+                                Next
+                            </Button>
+                        </Col>
+                    </Row>
+                </div>
             )}
         </Container>
     );
 };
 
-export default SetupPhase;
 
-export function ResultPhase() { };
+export function ResultPhase({ finalScore, onPlayAgain }) {
+    return (
+        <Container className="d-flex flex-column justify-content-center align-items-center align-self-center gap-4 py-4 mt-5">
+            <Row>
+                <Col className="text-center d-flex align-items-center gap-1">
+                    <h2 className="mb-0">Your final score: {finalScore}</h2>
+                    <img src="/src/assets/coin.svg" alt="coin" width="32" height="32" />
+                </Col>
+            </Row>
+
+            <Row>
+                <Col className="text-center">
+                    <Button size="lg" className="btn-accent" onClick={onPlayAgain}>
+                        Start New Game
+                    </Button>
+                </Col>
+            </Row>
+        </Container>
+    );
+
+};
