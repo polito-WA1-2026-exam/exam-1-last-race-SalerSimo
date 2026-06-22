@@ -1,5 +1,6 @@
 
 import { Col, Container, Row } from 'react-bootstrap';
+import PropTypes from "prop-types";
 import '../App.css';
 
 
@@ -119,3 +120,18 @@ export function MetroMap({ showSegments = true }) {
         </div>
     );
 }
+
+Segment.propTypes = {
+    station1Name: PropTypes.string.isRequired,
+    station2Name: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+};
+
+SegmentHorizontal.propTypes = {
+    station1Name: PropTypes.string.isRequired,
+    station2Name: PropTypes.string.isRequired,
+};
+
+MetroMap.propTypes = {
+    showSegments: PropTypes.bool,
+};

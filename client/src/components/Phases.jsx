@@ -2,6 +2,7 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import { GameTitle } from './GameTitle';
 import { Segment, SegmentHorizontal, MetroMap } from './Metro';
 import { useState, useEffect } from 'react';
+import PropTypes from "prop-types";
 import '../App.css';
 
 export function SetupPhase({ onReady }) {
@@ -73,11 +74,11 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
             <Row className="align-items-center mb-2 flex-shrink-0">
                 <Col md={8} className="d-flex align-items-center justify-content-center">
                     <div className="d-flex align-items-center gap-3">
-                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.start}</span>
+                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment.start}</span>
                         <svg width="48" height="32" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-muted">
                             <path d="M0 10h24M18 4l8 6-8 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                         </svg>
-                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.destination}</span>
+                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment.destination}</span>
                     </div>
                 </Col>
                 <Col md={4} className="d-flex justify-content-end align-items-center gap-3">
@@ -224,4 +225,34 @@ export function ResultPhase({ finalScore, onPlayAgain }) {
         </Container>
     );
 
+};
+
+SetupPhase.propTypes = {
+    onReady: PropTypes.func.isRequired,
+};
+
+PlanningPhase.propTypes = {
+    assignment: PropTypes.shape({
+        start: PropTypes.string,
+        destination: PropTypes.string
+    }).isRequired,
+    segments: PropTypes.array.isRequired,
+    onSubmitRoute: PropTypes.func.isRequired,
+    timeLimit: PropTypes.number.isRequired,
+};
+
+EventCard.propTypes = {
+    description: PropTypes.string,
+    effect: PropTypes.number,
+};
+
+ExecutionPhase.propTypes = {
+    events: PropTypes.array.isRequired,
+    valid: PropTypes.bool.isRequired,
+    onSeeResult: PropTypes.func.isRequired,
+};
+
+ResultPhase.propTypes = {
+    finalScore: PropTypes.number.isRequired,
+    onPlayAgain: PropTypes.func.isRequired,
 };

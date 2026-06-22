@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Col, Row, Container, ListGroup, Badge } from 'react-bootstrap';
+import PropTypes from "prop-types";
 import Header from './Header';
 import { GameTitle } from './GameTitle';
 import { SetupPhase, PlanningPhase, ExecutionPhase, ResultPhase } from './Phases';
@@ -154,6 +155,11 @@ export function GamePage({ user, logout }) {
     );
 }
 
+GamePage.propTypes = {
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired,
+};
+
 export function ScoreboardPage({ user, logout }) {
     const navigate = useNavigate();
 
@@ -208,3 +214,8 @@ export function ScoreboardPage({ user, logout }) {
         </div>
     );
 }
+
+ScoreboardPage.propTypes = {
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired,
+};
