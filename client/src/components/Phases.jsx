@@ -4,6 +4,7 @@ import { Segment, SegmentHorizontal, MetroMap } from './Metro';
 import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import '../App.css';
+import coinSvg from '../assets/coin.svg';
 
 export function SetupPhase({ onReady }) {
     return (
@@ -150,7 +151,7 @@ function EventCard({ description, effect }) {
                 <span className={`fs-4 fw-bold ${isPositive ? "text-success" : "text-danger"}`}>
                     {isPositive ? `+${effect}` : effect}
                 </span>
-                <img src="/src/assets/coin.svg" alt="coin" width="30" height="30" />
+                <img src={coinSvg} alt="coin" width="30" height="30" />
             </div>
         </div>
     );
@@ -214,7 +215,7 @@ export function ResultPhase({ finalScore, onPlayAgain }) {
                 <p className="text-muted mb-4">Here is your final score.</p>
                 <div className="d-inline-flex align-items-center gap-3 px-4 py-3 rounded-4 bg-light border mb-4">
                     <span className="display-6 fw-bold">{finalScore}</span>
-                    <img src="/src/assets/coin.svg" alt="coin" width="40" height="40" />
+                    <img src={coinSvg} alt="coin" width="40" height="40" />
                 </div>
                 <div>
                     <Button size="lg" className="btn-accent px-5" onClick={onPlayAgain}>

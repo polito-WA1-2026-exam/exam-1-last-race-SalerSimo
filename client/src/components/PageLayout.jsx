@@ -8,6 +8,7 @@ import { SetupPhase, PlanningPhase, ExecutionPhase, ResultPhase } from './Phases
 import { LoginButton } from "./Auth.jsx";
 import API from '../API';
 import '../App.css';
+import coinSvg from '../assets/coin.svg';
 
 const PHASES = {
     SETUP: 'setup',
@@ -202,7 +203,7 @@ export function ScoreboardPage({ user, logout }) {
                                         </Col>
                                         <Col className="d-flex align-items-center justify-content-end gap-2">
                                             <span className="fw-bold fs-5">{score.bestScore}</span>
-                                            <img src="/src/assets/coin.svg" alt="coin" width="22" height="22" />
+                                            <img src={coinSvg} alt="coin" width="22" height="22" />
                                         </Col>
                                     </Row>
                                 </div>
