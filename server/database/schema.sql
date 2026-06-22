@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS line_stations (
 CREATE TABLE IF NOT EXISTS users (
     userId INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
+    passwordHash TEXT NOT NULL,
     salt TEXT NOT NULL,
     bestScore INTEGER
 );

@@ -21,7 +21,7 @@ export default class UserDAO {
                         if (err) {
                             return reject(err);
                         }
-                        if (crypto.timingSafeEqual(derivedKey, Buffer.from(row.password_hash, "hex"))) {
+                        if (crypto.timingSafeEqual(derivedKey, Buffer.from(row.passwordHash, "hex"))) {
                             return resolve(user);
                         }
                         resolve(false);

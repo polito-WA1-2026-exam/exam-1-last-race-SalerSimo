@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(morgan('dev'));
 
-await initDatabase();
+//await initDatabase();
 const metroNetwork = new MetroNetwork();
 await metroNetwork.buildNetwork();
 const stationDAO = new StationDAO(db);
