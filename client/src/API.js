@@ -36,7 +36,7 @@ const getUserInfo = async () => {
 const startGame = async () => {
     const assignment = await fetch(
         SERVER_URL + '/game/start',
-        { method: 'GET', credentials: 'include' }
+        { method: 'POST', credentials: 'include' }
     ).then(handleInvalidResponse)
         .then(response => response.json());
     return assignment;

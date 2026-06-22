@@ -111,7 +111,7 @@ app.delete('/api/sessions/current', (req, res) => {
 });
 
 
-app.get("/api/game/start", isLoggedIn, async (req, res) => {
+app.post("/api/game/start", isLoggedIn, async (req, res) => {
     const minDistance = 3;
     const result = metroNetwork.getRandomStartAndDestination(minDistance);
     if (!result) {
