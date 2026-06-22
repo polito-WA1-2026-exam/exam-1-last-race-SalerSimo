@@ -57,20 +57,22 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
             setRemainingTime((prevTime) => {
                 return Math.max(prevTime - 1, 0);
             });
-            if (remainingTime <= 0) {
-                clearInterval(interval);
-                onSubmitRoute(route);
-            }
         }, 1000);
         return () => clearInterval(interval);
-    }, [onSubmitRoute, route, remainingTime]);
+    }, []);
+
+
+    useEffect(() => {
+        if (remainingTime === 0) {
+            onSubmitRoute(route);
+        }
+    }, [remainingTime, route, onSubmitRoute]);
 
     return (
         <Container fluid className="d-flex flex-column py-3">
             <Row className="align-items-center mb-2 flex-shrink-0">
                 <Col md={8} className="d-flex align-items-center justify-content-center">
                     <div className="d-flex align-items-center gap-3">
-                        {/* <span className="text-muted small text-uppercase" style={{ letterSpacing: '0.05em' }}>Route</span> */}
                         <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.start}</span>
                         <svg width="48" height="32" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-muted">
                             <path d="M0 10h24M18 4l8 6-8 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
