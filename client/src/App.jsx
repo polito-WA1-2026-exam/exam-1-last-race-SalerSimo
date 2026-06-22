@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import './App.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // import { Container } from 'react-bootstrap/';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { LoginForm } from './components/Auth.jsx';
@@ -11,16 +11,16 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        API.getUserInfo()
-            .then((user) => {
-                setLoggedIn(true);
-                setUser(user);
-            }).catch(() => {
-                setLoggedIn(false);
-                setUser(null);
-            });
-    }, []);
+    // useEffect(() => {
+    //     API.getUserInfo()
+    //         .then((user) => {
+    //             setLoggedIn(true);
+    //             setUser(user);
+    //         }).catch(() => {
+    //             setLoggedIn(false);
+    //             setUser(null);
+    //         });
+    // }, []);
 
 
     const handleLogin = async (credentials) => {
