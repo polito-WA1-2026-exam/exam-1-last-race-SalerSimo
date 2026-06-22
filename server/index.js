@@ -4,6 +4,7 @@ import session from "express-session";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import morgan from "morgan";
+import cors from "cors";
 import db, { initDatabase } from "./db.js";
 import MetroNetwork from "./metro.js";
 import StationDAO from "./dao/stations.js";
@@ -17,8 +18,14 @@ const port = 3001;
 app.use(express.json());
 app.use(morgan('dev'));
 
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true
+};
+app.use(cors(corsOptions));
+
 await initDatabase();
-const metroNetwork = await new MetroNetwork();
+const metroNetwork = new MetroNetwork();
 await metroNetwork.buildNetwork();
 const stationDAO = new StationDAO(db);
 const eventDAO = new EventDAO(db);
@@ -96,7 +103,7 @@ app.get("/api/game/start", isLoggedIn, async (req, res) => {
     const minDistance = 3;
     const result = metroNetwork.getRandomStartAndDestination(minDistance);
     if (!result) {
-        return res.status(500).json({ error: "Could not find valid start and destination stations." });
+        return res.status(500).json({ error: "Unable to find valid start and destination stations." });
     }
     const { start, destination } = result;
     req.session.start = start;
@@ -109,21 +116,21 @@ app.get("/api/game/start", isLoggedIn, async (req, res) => {
 app.post("/api/game/submit", isLoggedIn, async (req, res) => {
     const route = req.body.route;
     if (!req.session.start || !req.session.destination) {
-        return res.status(400).json({ error: "Game not properly initialized." });
+        return res.json({ valid: false, error: "No active game session found." });
     }
     const start = parseInt(req.session.start);
     const destination = parseInt(req.session.destination);
     req.session.start = null;
     req.session.destination = null;
     if (!route) {
-        return res.status(400).json({ error: "Invalid route." });
+        return res.json({ valid: false, error: "Invalid route." });
     }
     const stations = metroNetwork.validateRoute(route, start, destination);
     if (!stations) {
-        return res.status(400).json({ error: "Invalid route." });
+        return res.json({ valid: false, error: "Invalid route." });
     }
 
-    let score = 150;
+    let score = 20;
     const events = await eventDAO.getEvents();
     const result = []
     for (let i = 1; i < stations.length; i++) {
@@ -151,7 +158,7 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
         await userDAO.updateBestScore(userId, score);
     }
 
-    res.json({ events: result });
+    res.json({ valid: true, events: result });
 });
 
 app.get("/api/segments", isLoggedIn, async (req, res) => {
