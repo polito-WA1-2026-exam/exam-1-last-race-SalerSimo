@@ -15,14 +15,14 @@ import UserDAO from "./dao/users.js";
 const app = new express();
 const port = 3001;
 
-app.use(express.json());
-app.use(morgan('dev'));
-
 const corsOptions = {
     origin: 'http://localhost:5173',
     credentials: true
 };
 app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.static('public'));
+app.use(morgan('dev'));
 
 await initDatabase();
 const metroNetwork = new MetroNetwork();
@@ -183,6 +183,10 @@ app.get("/api/segments", isLoggedIn, async (req, res) => {
 app.get("/api/scoreboard", isLoggedIn, async (req, res) => {
     const scoreboard = await userDAO.getScoreboard();
     res.json(scoreboard);
+});
+
+app.get("/api/metro-map.svg", isLoggedIn, async (req, res) => {
+    res.sendFile('metro-map.svg', { root: 'public' });
 });
 
 // activate the server

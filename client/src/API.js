@@ -65,6 +65,14 @@ const getScoreboard = async () => {
     return scoreboard;
 }
 
+const getMap = async () => {
+    const map = await fetch(SERVER_URL + '/metro-map.svg', { credentials: 'include' }).then(response => response.text()).catch(err => {
+        console.error('Failed to fetch map SVG:', err);
+        return '';
+    });
+    return map;
+}
+
 function handleInvalidResponse(response) {
     if (!response.ok) { throw Error(response.statusText) }
     let type = response.headers.get('Content-Type');
@@ -75,5 +83,5 @@ function handleInvalidResponse(response) {
 }
 
 
-const API = { logIn, logOut, startGame, getSegments, submitRoute, getScoreboard, getUserInfo };
+const API = { logIn, logOut, startGame, getSegments, submitRoute, getScoreboard, getUserInfo, getMap };
 export default API;
