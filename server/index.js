@@ -67,6 +67,18 @@ const isLoggedIn = (req, res, next) => {
 
 // This route is used for performing login.
 app.post('/api/sessions', function (req, res, next) {
+    if (!req.body || typeof req.body.username !== 'string' || typeof req.body.password !== 'string') {
+        return res.status(400).json({ error: 'Username and password are required.' });
+    }
+    const username = req.body.username.trim();
+    const password = req.body.password;
+    if (!username || username.length > 50) {
+        return res.status(400).json({ error: 'Username must be between 1 and 50 characters.' });
+    }
+    if (!password) {
+        return res.status(400).json({ error: 'Password is required.' });
+    }
+    req.body.username = username;
     passport.authenticate('local', (err, user, info) => {
         if (err)
             return next(err);
@@ -114,10 +126,13 @@ app.get("/api/game/start", isLoggedIn, async (req, res) => {
 });
 
 app.post("/api/game/submit", isLoggedIn, async (req, res) => {
-    const route = req.body.route;
+    if (!req.body) {
+        return res.json({ valid: false, error: "Invalid route." });
+    }
     if (!req.session.start || !req.session.destination) {
         return res.json({ valid: false, error: "No active game session found." });
     }
+    const route = req.body.route;
     const start = parseInt(req.session.start);
     const destination = parseInt(req.session.destination);
     req.session.start = null;

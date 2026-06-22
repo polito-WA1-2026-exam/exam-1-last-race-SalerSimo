@@ -16,7 +16,22 @@ function LoginForm(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const credentials = { username, password };
+        setShow(false);
+
+        const trimmedUsername = username.trim();
+        if (!trimmedUsername) {
+            setErrorMessage("Username is required.");
+            setShow(true);
+            return;
+        }
+        if (!password) {
+            setErrorMessage("Password is required.");
+            setShow(true);
+            return;
+        }
+
+
+        const credentials = { username: trimmedUsername, password };
 
         props.login(credentials)
             .then(() => navigate("/game"))
