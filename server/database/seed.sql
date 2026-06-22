@@ -6,7 +6,7 @@
 
 --username: User3
 --password: password3
-INSERT INTO users (username, password_hash, salt, bestScore) VALUES 
+INSERT INTO users (username, passwordHash, salt, bestScore) VALUES 
 (
     'Simone', 
     'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 
@@ -21,7 +21,7 @@ INSERT INTO users (username, password_hash, salt, bestScore) VALUES
 );
 
 
-INSERT INTO users (username, password_hash, salt) VALUES 
+INSERT INTO users (username, passwordHash, salt) VALUES 
 (
     'User3',
     '4395321dc2bb6c8ab18008d0515272eff0c39ca1f172e4d863e411633b1e8fb9721dce8fdef6e2b6cd503570db29ee6d953583fc09468e4fef5f811e65eac784',

@@ -77,9 +77,9 @@
 
 - **`stations`** — individual metro stations (columns: `stationId`, `name`).
 - **`lines`** — metro lines (columns: `lineId`, `name`).
-- **`segments`** — undirected connections between two stations (columns: `station1Id`, `station2Id`, with `station1Id < station2Id` constraint).
+- **`segments`** — undirected connections between two stations (columns: `station1Id`, `station2Id`).
 - **`line_stations`** — junction table mapping which stations belong to which lines (columns: `lineId`, `stationId`).
-- **`users`** — registered users with password hashes, salt, and best score (columns: `userId`, `username`, `password_hash`, `salt`, `bestScore`).
+- **`users`** — registered users with password hashes, salt, and best score (columns: `userId`, `username`, `passwordHash`, `salt`, `bestScore`).
 - **`events`** — random events that occur during route execution, each with a point effect between -4 and +4 (columns: `eventId`, `description`, `effect`).
 
 ## Main React Components
