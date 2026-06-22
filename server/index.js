@@ -122,7 +122,7 @@ app.get("/api/game/start", isLoggedIn, async (req, res) => {
     req.session.destination = destination;
     const startName = await stationDAO.getStationName(start);
     const destinationName = await stationDAO.getStationName(destination);
-    res.json({ startID: start, start: startName, destinationID: destination, destination: destinationName });
+    res.json({ start: startName, destination: destinationName });
 });
 
 app.post("/api/game/submit", isLoggedIn, async (req, res) => {

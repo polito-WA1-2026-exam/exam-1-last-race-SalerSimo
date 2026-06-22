@@ -15,7 +15,7 @@ export default class UserDAO {
                     return resolve(false);
                 }
                 else {
-                    const user = { id: row.userId, username: row.username, bestScore: row.best_score };
+                    const user = { id: row.userId, username: row.username };
 
                     crypto.scrypt(password, row.salt, 64, (err, derivedKey) => {
                         if (err) {
