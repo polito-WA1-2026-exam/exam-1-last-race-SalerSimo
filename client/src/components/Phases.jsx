@@ -92,39 +92,43 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
                     <MetroMap showSegments={false}></MetroMap>
                 </Col>
 
-                <Col md={4} className="d-flex h-100 overflow-auto">
-                    <Col md={6} className='pe-2 h-100' id="segments-container">
-                        <Col className="d-flex flex-column border p-0 h-100">
-                            <div className="fw-semibold text-center py-2 border-bottom bg-light flex-shrink-0">Segments</div>
-                            {segments.map(seg => (
-                                <Segment
-                                    key={`${seg.station1Id},${seg.station2Id}`}
-                                    station1Id={seg.station1Id}
-                                    station1Name={seg.station1Name}
-                                    station2Id={seg.station2Id}
-                                    station2Name={seg.station2Name}
-                                    onClick={() => selectSegment(seg)}
-                                />
-                            ))}
-                        </Col>
-                    </Col>
-                    <Col md={6} className='ps-2 h-100' id="route-container">
-                        <Col className="d-flex flex-column border p-0 overflow-scroll h-100">
-                            <div className="fw-semibold text-center py-2 border-bottom bg-light flex-shrink-0">Route</div>
-                            {route.length === 0 ? (
-                                <div className="text-muted text-center py-3 small">Select segments to build your route</div>
-                            ) : (
-                                route.map((seg) => (
+                <Col md={4} className="d-flex h-100 overflow-auto justify-content-between">
+                    <Col md={6} className='h-100 pe-2' id="segments-container">
+                        <Col className="d-flex flex-column border-0 rounded-3 shadow-sm h-100 overflow-hidden">
+                            <div className="fw-semibold text-center py-2 border-bottom bg-primary text-white flex-shrink-0">Segments</div>
+                            <div style={{ background: '#fafafa' }}>
+                                {segments.map(seg => (
                                     <Segment
-                                        key={seg.index}
+                                        key={`${seg.station1Id},${seg.station2Id}`}
                                         station1Id={seg.station1Id}
                                         station1Name={seg.station1Name}
                                         station2Id={seg.station2Id}
                                         station2Name={seg.station2Name}
-                                        onClick={() => deselectSegment(seg)}
+                                        onClick={() => selectSegment(seg)}
                                     />
-                                ))
-                            )}
+                                ))}
+                            </div>
+                        </Col>
+                    </Col>
+                    <Col md={6} className='h-100 ps-2' id="route-container">
+                        <Col className="d-flex flex-column border-0 rounded-3 shadow-sm h-100 overflow-hidden">
+                            <div className="fw-semibold text-center py-2 border-bottom bg-primary text-white flex-shrink-0">Route</div>
+                            <div style={{ background: '#fafafa' }}>
+                                {route.length === 0 ? (
+                                    <div className="text-muted text-center py-3 small">Select segments to build your route</div>
+                                ) : (
+                                    route.map((seg) => (
+                                        <Segment
+                                            key={seg.index}
+                                            station1Id={seg.station1Id}
+                                            station1Name={seg.station1Name}
+                                            station2Id={seg.station2Id}
+                                            station2Name={seg.station2Name}
+                                            onClick={() => deselectSegment(seg)}
+                                        />
+                                    ))
+                                )}
+                            </div>
                         </Col>
                     </Col>
                 </Col>

@@ -76,7 +76,7 @@ export function MetroMap({ showSegments = true }) {
     });
 
     return (
-        <div className="border p-5 rounded">
+        <div className="bg-light bg-opacity-50 p-4 rounded-4 shadow-sm border-0" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
             <svg viewBox="0 0 1256 693" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="233.591" y="26" width="323" height="8" fill="#0000FF" />
                 <rect x="212.591" y="286" width="300" height="8" fill="#FF0000" />
