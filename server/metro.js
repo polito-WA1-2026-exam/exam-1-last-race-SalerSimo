@@ -98,6 +98,10 @@ export default class MetroNetwork {
             if (!Array.isArray(segment) || segment.length !== 2) {
                 return false;
             }
+            const [s1, s2] = segment;
+            if (!this.network[s1] || !this.network[s2]) {
+                return false;
+            }
         }
 
         if (!route[0].includes(start)) {

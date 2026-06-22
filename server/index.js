@@ -15,14 +15,14 @@ import UserDAO from "./dao/users.js";
 const app = new express();
 const port = 3001;
 
-app.use(express.json());
-app.use(morgan('dev'));
-
 const corsOptions = {
     origin: 'http://localhost:5173',
     credentials: true
 };
 app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.static('public'));
+app.use(morgan('dev'));
 
 await initDatabase();
 const metroNetwork = new MetroNetwork();
@@ -111,7 +111,7 @@ app.delete('/api/sessions/current', (req, res) => {
 });
 
 
-app.get("/api/game/start", isLoggedIn, async (req, res) => {
+app.post("/api/game/start", isLoggedIn, async (req, res) => {
     const minDistance = 3;
     const result = metroNetwork.getRandomStartAndDestination(minDistance);
     if (!result) {
@@ -122,7 +122,7 @@ app.get("/api/game/start", isLoggedIn, async (req, res) => {
     req.session.destination = destination;
     const startName = await stationDAO.getStationName(start);
     const destinationName = await stationDAO.getStationName(destination);
-    res.json({ startID: start, start: startName, destinationID: destination, destination: destinationName });
+    res.json({ start: startName, destination: destinationName });
 });
 
 app.post("/api/game/submit", isLoggedIn, async (req, res) => {
@@ -168,7 +168,7 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
 
     const userId = req.user.id;
     const currentBestScore = await userDAO.getScoreById(userId);
-    if (!currentBestScore || score > currentBestScore.bestScore) {
+    if (currentBestScore == null || score > currentBestScore) {
         await userDAO.updateBestScore(userId, score);
     }
 
@@ -183,6 +183,10 @@ app.get("/api/segments", isLoggedIn, async (req, res) => {
 app.get("/api/scoreboard", isLoggedIn, async (req, res) => {
     const scoreboard = await userDAO.getScoreboard();
     res.json(scoreboard);
+});
+
+app.get("/api/metro-map.svg", isLoggedIn, async (req, res) => {
+    res.sendFile('metro-map.svg', { root: 'public' });
 });
 
 // activate the server

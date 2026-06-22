@@ -2,7 +2,9 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import { GameTitle } from './GameTitle';
 import { Segment, SegmentHorizontal, MetroMap } from './Metro';
 import { useState, useEffect } from 'react';
+import PropTypes from "prop-types";
 import '../App.css';
+import coinSvg from '../assets/coin.svg';
 
 export function SetupPhase({ onReady }) {
     return (
@@ -57,25 +59,27 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
             setRemainingTime((prevTime) => {
                 return Math.max(prevTime - 1, 0);
             });
-            if (remainingTime <= 0) {
-                clearInterval(interval);
-                onSubmitRoute(route);
-            }
         }, 1000);
         return () => clearInterval(interval);
-    }, [onSubmitRoute, route, remainingTime]);
+    }, []);
+
+
+    useEffect(() => {
+        if (remainingTime === 0) {
+            onSubmitRoute(route);
+        }
+    }, [remainingTime, route, onSubmitRoute]);
 
     return (
         <Container fluid className="d-flex flex-column py-3">
             <Row className="align-items-center mb-2 flex-shrink-0">
                 <Col md={8} className="d-flex align-items-center justify-content-center">
                     <div className="d-flex align-items-center gap-3">
-                        {/* <span className="text-muted small text-uppercase" style={{ letterSpacing: '0.05em' }}>Route</span> */}
-                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.start}</span>
+                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment.start}</span>
                         <svg width="48" height="32" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-muted">
                             <path d="M0 10h24M18 4l8 6-8 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                         </svg>
-                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.destination}</span>
+                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment.destination}</span>
                     </div>
                 </Col>
                 <Col md={4} className="d-flex justify-content-end align-items-center gap-3">
@@ -147,7 +151,7 @@ function EventCard({ description, effect }) {
                 <span className={`fs-4 fw-bold ${isPositive ? "text-success" : "text-danger"}`}>
                     {isPositive ? `+${effect}` : effect}
                 </span>
-                <img src="/src/assets/coin.svg" alt="coin" width="30" height="30" />
+                <img src={coinSvg} alt="coin" width="30" height="30" />
             </div>
         </div>
     );
@@ -211,7 +215,7 @@ export function ResultPhase({ finalScore, onPlayAgain }) {
                 <p className="text-muted mb-4">Here is your final score.</p>
                 <div className="d-inline-flex align-items-center gap-3 px-4 py-3 rounded-4 bg-light border mb-4">
                     <span className="display-6 fw-bold">{finalScore}</span>
-                    <img src="/src/assets/coin.svg" alt="coin" width="40" height="40" />
+                    <img src={coinSvg} alt="coin" width="40" height="40" />
                 </div>
                 <div>
                     <Button size="lg" className="btn-accent px-5" onClick={onPlayAgain}>
@@ -222,4 +226,34 @@ export function ResultPhase({ finalScore, onPlayAgain }) {
         </Container>
     );
 
+};
+
+SetupPhase.propTypes = {
+    onReady: PropTypes.func.isRequired,
+};
+
+PlanningPhase.propTypes = {
+    assignment: PropTypes.shape({
+        start: PropTypes.string,
+        destination: PropTypes.string
+    }).isRequired,
+    segments: PropTypes.array.isRequired,
+    onSubmitRoute: PropTypes.func.isRequired,
+    timeLimit: PropTypes.number.isRequired,
+};
+
+EventCard.propTypes = {
+    description: PropTypes.string,
+    effect: PropTypes.number,
+};
+
+ExecutionPhase.propTypes = {
+    events: PropTypes.array.isRequired,
+    valid: PropTypes.bool.isRequired,
+    onSeeResult: PropTypes.func.isRequired,
+};
+
+ResultPhase.propTypes = {
+    finalScore: PropTypes.number.isRequired,
+    onPlayAgain: PropTypes.func.isRequired,
 };

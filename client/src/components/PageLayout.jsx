@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Col, Row, Container, ListGroup, Badge } from 'react-bootstrap';
+import PropTypes from "prop-types";
 import Header from './Header';
 import { GameTitle } from './GameTitle';
 import { SetupPhase, PlanningPhase, ExecutionPhase, ResultPhase } from './Phases';
 import { LoginButton } from "./Auth.jsx";
 import API from '../API';
 import '../App.css';
+import coinSvg from '../assets/coin.svg';
 
 const PHASES = {
     SETUP: 'setup',
@@ -96,8 +98,8 @@ export function GamePage({ user, logout }) {
 
         setValidRoute(result.valid);
         setEvents(result.events || []);
+        setFinalScore(result.finalScore || 0);
         if (result.valid) {
-            setFinalScore(result.finalScore || 0);
             setPhase(PHASES.EXECUTION);
         }
         else {
@@ -154,6 +156,11 @@ export function GamePage({ user, logout }) {
     );
 }
 
+GamePage.propTypes = {
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired,
+};
+
 export function ScoreboardPage({ user, logout }) {
     const navigate = useNavigate();
 
@@ -196,7 +203,7 @@ export function ScoreboardPage({ user, logout }) {
                                         </Col>
                                         <Col className="d-flex align-items-center justify-content-end gap-2">
                                             <span className="fw-bold fs-5">{score.bestScore}</span>
-                                            <img src="/src/assets/coin.svg" alt="coin" width="22" height="22" />
+                                            <img src={coinSvg} alt="coin" width="22" height="22" />
                                         </Col>
                                     </Row>
                                 </div>
@@ -208,3 +215,8 @@ export function ScoreboardPage({ user, logout }) {
         </div>
     );
 }
+
+ScoreboardPage.propTypes = {
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired,
+};
