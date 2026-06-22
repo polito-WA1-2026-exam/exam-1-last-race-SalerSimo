@@ -168,7 +168,7 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
 
     const userId = req.user.id;
     const currentBestScore = await userDAO.getScoreById(userId);
-    if (!currentBestScore || score > currentBestScore.bestScore) {
+    if (currentBestScore == null || score > currentBestScore) {
         await userDAO.updateBestScore(userId, score);
     }
 

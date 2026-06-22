@@ -37,7 +37,7 @@ export default class UserDAO {
                 if (err) {
                     return reject(err);
                 }
-                return resolve(row);
+                return resolve(row.bestScore);
             });
         });
     }
