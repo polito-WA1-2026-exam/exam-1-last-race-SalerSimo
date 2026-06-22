@@ -1,7 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import './App.css';
 import { useState } from 'react';
-// import { Container } from 'react-bootstrap/';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { LoginForm } from './components/Auth.jsx';
 import { PublicPage, GamePage, ScoreboardPage } from './components/PageLayout.jsx';
