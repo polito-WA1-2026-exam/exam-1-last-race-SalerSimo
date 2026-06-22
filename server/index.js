@@ -139,7 +139,7 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
         const randomIndex = Math.floor(Math.random() * events.length);
         const randomEvent = events[randomIndex];
         if (randomEvent) {
-            score += randomEvent.effect;
+            score = Math.max(score + randomEvent.effect, 0);
         }
         const station1Name = await stationDAO.getStationName(station1Id);
         const station2Name = await stationDAO.getStationName(station2Id);
@@ -148,7 +148,6 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
             station1: station1Name,
             station2: station2Name,
             event: randomEvent ? { description: randomEvent.description, effect: randomEvent.effect } : null,
-            currentScore: score
         });
     }
 
@@ -158,7 +157,7 @@ app.post("/api/game/submit", isLoggedIn, async (req, res) => {
         await userDAO.updateBestScore(userId, score);
     }
 
-    res.json({ valid: true, events: result });
+    res.json({ valid: true, events: result, finalScore: score });
 });
 
 app.get("/api/segments", isLoggedIn, async (req, res) => {
