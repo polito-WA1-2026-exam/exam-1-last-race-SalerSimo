@@ -1,6 +1,5 @@
 
 import { Col, Container, Row } from 'react-bootstrap';
-import { useEffect } from 'react';
 import '../App.css';
 
 
@@ -63,20 +62,9 @@ export function SegmentHorizontal({ station1Name, station2Name }) {
 }
 
 export function MetroMap({ showSegments = true }) {
-    const lineColors = ["#0000FF", "#FF0000", "#FFCF00", "#008F00"];
-    useEffect(() => {
-        if (showSegments) {
-            return;
-        }
-        for (const color of lineColors) {
-            document.querySelectorAll(`[fill="${color}"`).forEach(el => {
-                el.style.display = showSegments ? "" : "none";
-            });
-        }
-    });
 
     return (
-        <div className="bg-light bg-opacity-50 p-4 rounded-4 shadow-sm border-0" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
+        <div className={`bg-light bg-opacity-50 p-4 rounded-4 shadow-sm border-0${showSegments ? '' : ' hide-lines'}`} style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
             <svg viewBox="0 0 1256 693" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="233.591" y="26" width="323" height="8" fill="#0000FF" />
                 <rect x="212.591" y="286" width="300" height="8" fill="#FF0000" />

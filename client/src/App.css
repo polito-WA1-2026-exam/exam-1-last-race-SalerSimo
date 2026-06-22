@@ -62,3 +62,7 @@
 .segment:hover .segment-circle {
     background-color: #FFD700 !important;
 }
+
+.hide-lines [fill^="#"] {
+    display: none;
+}
