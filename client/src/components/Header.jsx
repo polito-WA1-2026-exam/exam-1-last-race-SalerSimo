@@ -22,7 +22,9 @@ function Header(props) {
                 <Col md={4}>
                     <a onClick={() => props.loggedIn ? props.onClickTitle() : navigate("/")} style={{ cursor: "pointer" }}
                         className="d-flex align-items-center justify-content-center justify-content-md-start h-100 text-decoration-none">
-                        <span className="h3 mb-0 text-white">Last Race</span>
+                        <span className="h3 fw-bold text-uppercase mb-0 text-white">
+                            Last Race
+                        </span>
                     </a>
                 </Col>
                 <Col md={8} className="d-flex align-items-center justify-content-end gap-2">

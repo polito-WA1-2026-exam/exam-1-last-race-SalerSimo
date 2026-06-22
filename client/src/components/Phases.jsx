@@ -1,4 +1,5 @@
 import { Button, Container, Row, Col } from 'react-bootstrap';
+import { GameTitle } from './GameTitle';
 import { Segment, SegmentHorizontal, MetroMap } from './Metro';
 import { useState, useEffect } from 'react';
 import '../App.css';
@@ -10,14 +11,17 @@ export function SetupPhase({ onReady }) {
                 <Col md={8}>
                     <MetroMap></MetroMap>
                 </Col>
-                <Col md={4}>
-                    <p className="text-muted">
-                        Study the metro network carefully before starting. You will not see
-                        the lines during the planning phase — only the station names.
+                <Col md={4} className="px-5">
+                    <GameTitle className="mb-0" />
+                    <h2 className="h5 fw-semibold mt-3">Study the map</h2>
+                    <p className="text-muted mb-1">
+                        The full metro network is displayed — every station, line, and connection.
                     </p>
-                    <p className="text-muted fst-italic">
-                        Once you press <strong>Start Game</strong>, a starting station
-                        and destination will be assigned and the 90-second timer will begin.
+                    <p className="text-muted mb-1">
+                        During the <strong>Planning</strong> phase, the lines will disappear and only station names will be visible, so take a moment to memorize the layout.
+                    </p>
+                    <p className="text-muted mb-4">
+                        Press <strong>Start Game</strong> when you are ready. A random start and destination will be assigned, and the countdown will begin.
                     </p>
                     <Button size="lg" className="btn-accent" onClick={onReady}>
                         Start Game

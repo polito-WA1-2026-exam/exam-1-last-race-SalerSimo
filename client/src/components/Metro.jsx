@@ -9,7 +9,7 @@ export function Segment({ station1Name, station2Name, onClick }) {
         width: 18,
         height: 18,
         borderRadius: '50%',
-        border: '4px solid black',
+        border: '4px solid var(--accent)',
         backgroundColor: 'white',
         flexShrink: 0,
     };
@@ -19,9 +19,9 @@ export function Segment({ station1Name, station2Name, onClick }) {
                 <Col className="d-flex flex-column align-items-center py-1 px-2">
                     <div className="segment-circle" style={circle} />
                     <div style={{
-                        width: 2,
+                        width: 4,
                         height: 6,
-                        borderLeft: '4px solid black',
+                        backgroundColor: 'var(--accent)',
                     }} />
                     <div className="segment-circle" style={circle} />
                 </Col>
@@ -40,7 +40,7 @@ export function SegmentHorizontal({ station1Name, station2Name }) {
         width: 28,
         height: 28,
         borderRadius: '50%',
-        border: '4px solid var(--accent)',
+        border: '6px solid var(--accent)',
         backgroundColor: 'white',
         flexShrink: 0,
     };
@@ -52,7 +52,7 @@ export function SegmentHorizontal({ station1Name, station2Name }) {
                 <div style={circle} />
                 <div style={{
                     width: 60,
-                    height: 4,
+                    height: 6,
                     backgroundColor: 'var(--accent)',
                 }} />
                 <div style={circle} />
@@ -73,7 +73,7 @@ export function MetroMap({ showSegments = true }) {
                 el.style.display = showSegments ? "" : "none";
             });
         }
-    }, []);
+    });
 
     return (
         <div className="border p-5 rounded">

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Col, Row, Container, Badge, ListGroup } from 'react-bootstrap';
+import { Col, Row, Container, ListGroup, Badge } from 'react-bootstrap';
 import Header from './Header';
+import { GameTitle } from './GameTitle';
 import { SetupPhase, PlanningPhase, ExecutionPhase, ResultPhase } from './Phases';
 import { LoginButton } from "./Auth.jsx";
 import API from '../API';
@@ -18,45 +19,49 @@ const PHASES = {
 export function PublicPage() {
     return (
         <Container className="py-5">
-            <Row className="justify-content-center">
-                <Col md={8} lg={6}>
-
-                    <div className="text-center mb-4">
-                        <h1 className="h2 fw-semibold">Last Race</h1>
-                        <p className="text-muted">
-                            Navigate a fictional underground network, beat the clock, and reach
-                            your destination with as many coins as possible.
-                        </p>
+            <Row className="justify-content-center py-5">
+                <Col md={6}>
+                    <GameTitle />
+                    <div className="mt-4">
+                        <h2 className="h5 fw-semibold">How to play</h2>
+                        <div className="text-start">
+                            <ListGroup className="mb-4">
+                                <ListGroup.Item className="d-flex align-items-center gap-2">
+                                    <Badge className="me-2 mt-1 fs-6">1</Badge>
+                                    <span>
+                                        <strong>Setup.</strong> Study the full metro map — all stations,
+                                        lines, and connections are visible. When ready, move on.
+                                    </span>
+                                </ListGroup.Item>
+                                <ListGroup.Item className="d-flex align-items-center gap-2">
+                                    <Badge className="me-2 mt-1 fs-6">2</Badge>
+                                    <span>
+                                        <strong>Planning</strong> <span className="text-muted">(90 s).</span>{' '}
+                                        The lines disappear. You are assigned a start and a destination
+                                        station. Build your route from a list of connected
+                                        pairs before time runs out.
+                                    </span>
+                                </ListGroup.Item>
+                                <ListGroup.Item className="d-flex align-items-center gap-2">
+                                    <Badge className="me-2 mt-1 fs-6">3</Badge>
+                                    <span>
+                                        <strong>Execution.</strong> Each segment plays out one at a time.
+                                        A random event fires at every step, adding or removing coins.
+                                    </span>
+                                </ListGroup.Item>
+                                <ListGroup.Item className="d-flex align-items-center gap-2">
+                                    <Badge className="me-2 mt-1 fs-6">4</Badge>
+                                    <span>
+                                        <strong>Result.</strong> Your remaining coins are your final score. Play again or check the scoreboard.
+                                    </span>
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </div>
                     </div>
-
-                    <h2 className="h5 fw-semibold mt-4">How to play</h2>
-                    <ListGroup className="mb-4">
-                        <ListGroup.Item>
-                            <Badge className="me-2">1</Badge>
-                            <strong>Setup.</strong> Study the full metro map — all stations,
-                            lines, and connections are visible. When ready, move on.
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Badge className="me-2">2</Badge>
-                            <strong>Planning</strong> <span className="text-muted">(90 s).</span>{" "}
-                            The lines disappear. You are assigned a start and a destination
-                            station. Build your route from a list of connected
-                            pairs before time runs out.
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Badge className="me-2">3</Badge>
-                            <strong>Execution.</strong> Each segment plays out one at a time.
-                            A random event fires at every step, adding or removing coins.
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Badge className="me-2">4</Badge>
-                            <strong>Result.</strong> Your remaining coins are your final score. Play again or check the scoreboard.
-                        </ListGroup.Item>
-                    </ListGroup>
-                    <LoginButton></LoginButton>
+                    <LoginButton />
                 </Col>
             </Row>
-        </Container>
+        </Container >
     );
 }
 
@@ -127,7 +132,7 @@ export function GamePage(props) {
                         assignment={assignment}
                         segments={segments}
                         onSubmitRoute={handleRouteSubmitted}
-                        timeLimit={20}
+                        timeLimit={90}
                     />
                 )}
 
@@ -150,6 +155,7 @@ export function GamePage(props) {
 }
 
 export function ScoreboardPage({ loggedIn, logout }) {
+    const navigate = useNavigate();
 
     const [scores, setScores] = useState([]);
 
@@ -158,9 +164,14 @@ export function ScoreboardPage({ loggedIn, logout }) {
             .then(scores => setScores(scores))
             .catch(err => console.error("Failed to load scoreboard:", err));
     }, []);
+
+    const onClickTitle = () => {
+        navigate("/game");
+    }
+
     return (
         <div>
-            <Header loggedIn={loggedIn} logout={logout} />
+            <Header loggedIn={loggedIn} logout={logout} onClickTitle={onClickTitle} />
             <Container className="py-4">
                 <Row className="mb-4">
                     <Col className="text-center">
@@ -177,13 +188,13 @@ export function ScoreboardPage({ loggedIn, logout }) {
                             scores.map((score, i) => (
                                 <div key={score.username} className="scoreboard-card p-3 mb-3 bg-light border rounded-3">
                                     <Row className="align-items-center">
-                                        <Col className="pe-0">
+                                        <Col className="pe-0 d-flex align-items-center justify-content-start">
                                             <span className="fw-bold text-muted">{i + 1}.</span>
                                         </Col>
                                         <Col>
                                             <span className="fw-semibold">{score.username}</span>
                                         </Col>
-                                        <Col className="d-flex align-items-center gap-2">
+                                        <Col className="d-flex align-items-center justify-content-end gap-2">
                                             <span className="fw-bold fs-5">{score.bestScore}</span>
                                             <img src="/src/assets/coin.svg" alt="coin" width="22" height="22" />
                                         </Col>

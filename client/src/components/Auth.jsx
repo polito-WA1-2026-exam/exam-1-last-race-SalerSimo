@@ -87,7 +87,7 @@ LogoutButton.propTypes = {
 function LoginButton() {
     const navigate = useNavigate();
     return (
-        <Button onClick={() => navigate('/login')}>Login</Button>
+        <Button className="py-2 px-3 fs-5" onClick={() => navigate('/login')}>Login</Button>
     )
 }
 
