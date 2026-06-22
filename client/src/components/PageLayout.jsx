@@ -20,9 +20,10 @@ const PHASES = {
 
 export function PublicPage() {
     return (
-        <Container className="py-5">
+        <div >
+            <Header loggedIn={false} />
             <Row className="justify-content-center py-5">
-                <Col md={6}>
+                <Col md={4}>
                     <GameTitle />
                     <div className="mt-4">
                         <h2 className="h5 fw-semibold">How to play</h2>
@@ -63,7 +64,7 @@ export function PublicPage() {
                     <LoginButton />
                 </Col>
             </Row>
-        </Container >
+        </div >
     );
 }
 

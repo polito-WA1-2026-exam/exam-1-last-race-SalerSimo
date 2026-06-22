@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Button, Col, Container, Row } from "react-bootstrap/";
-import { LogoutButton, LoginButton } from './Auth';
+import { LogoutButton } from './Auth';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
@@ -42,7 +42,7 @@ function Header(props) {
                     {props.loggedIn &&
                         <a onClick={() => navigate("/scoreboard")} className="btn btn-outline-light">Scoreboard</a>
                     }
-                    {props.loggedIn ? <LogoutButton logout={props.logout} /> : <LoginButton />}
+                    {props.loggedIn && <LogoutButton logout={props.logout} />}
                 </Col>
             </Row>
         </Container>
