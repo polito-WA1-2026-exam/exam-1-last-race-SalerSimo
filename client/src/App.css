@@ -60,5 +60,5 @@
 }
 
 .segment:hover .segment-circle {
-    background-color: var(--accent) !important;
+    background-color: #FFD700 !important;
 }

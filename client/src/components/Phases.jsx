@@ -11,14 +11,14 @@ export function SetupPhase({ onReady }) {
                 <Col md={8}>
                     <MetroMap></MetroMap>
                 </Col>
-                <Col md={4} className="px-5">
-                    <GameTitle className="mb-0" />
+                <Col md={4} className="px-5 d-flex flex-column justify-content-center align-items-center text-center">
+                    <GameTitle />
                     <h2 className="h5 fw-semibold mt-3">Study the map</h2>
                     <p className="text-muted mb-1">
                         The full metro network is displayed — every station, line, and connection.
                     </p>
                     <p className="text-muted mb-1">
-                        During the <strong>Planning</strong> phase, the lines will disappear and only station names will be visible, so take a moment to memorize the layout.
+                        During the next phase, the lines will disappear and only station names will be visible, so take a moment to memorize the layout.
                     </p>
                     <p className="text-muted mb-4">
                         Press <strong>Start Game</strong> when you are ready. A random start and destination will be assigned, and the countdown will begin.
@@ -68,11 +68,15 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
     return (
         <Container fluid className="d-flex flex-column py-3">
             <Row className="align-items-center mb-2 flex-shrink-0">
-                <Col md={8}>
-                    <h5 className="mb-0">
-                        Go from <span className="fw-bold">{assignment?.start}</span> to{' '}
-                        <span className="fw-bold">{assignment?.destination}</span>
-                    </h5>
+                <Col md={8} className="d-flex align-items-center justify-content-center">
+                    <div className="d-flex align-items-center gap-3">
+                        {/* <span className="text-muted small text-uppercase" style={{ letterSpacing: '0.05em' }}>Route</span> */}
+                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.start}</span>
+                        <svg width="48" height="32" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-muted">
+                            <path d="M0 10h24M18 4l8 6-8 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        </svg>
+                        <span className="fw-bold fs-5 px-3 py-1 rounded-pill bg-light border">{assignment?.destination}</span>
+                    </div>
                 </Col>
                 <Col md={4} className="d-flex justify-content-end align-items-center gap-3">
                     <div className="timer" style={{ background: remainingTime <= 10 ? 'red' : 'green' }}>{remainingTime}</div>
