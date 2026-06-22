@@ -1,7 +1,33 @@
--- username: simone
+-- username: Simone
 -- password: password
+
+-- username: User2
+-- password: password2
+
+--username: User3
+--password: password3
 INSERT INTO users (username, password_hash, salt, bestScore) VALUES 
-('simone', 'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 'e52475d49a4b4f071ebacdb3dcd5318e', 100);
+(
+    'Simone', 
+    'd865615ae46b32df11b3924ddd045ddc462cb44256665555d43a7aa423880d0d63564865d8df7e84055ed9983225c017de8bea44c8676e37ce274d2b1c07a772', 
+    'e52475d49a4b4f071ebacdb3dcd5318e', 
+    22
+),
+(
+    'User2', 
+    '3f6de42c4d8aff09303726a27705e9443e6af472d7e280d10dcc88ef376e7b898afb8019870e455d265fe431accc9bd50385fe971c8b8e16528e68c737a9b2f1',
+    '68a39e6911c73ee5aab26ccf0f29f508',
+    18
+);
+
+
+INSERT INTO users (username, password_hash, salt) VALUES 
+(
+    'User3',
+    '4395321dc2bb6c8ab18008d0515272eff0c39ca1f172e4d863e411633b1e8fb9721dce8fdef6e2b6cd503570db29ee6d953583fc09468e4fef5f811e65eac784',
+    '0cfe588a55ef5ee3b2a26e399ccdafa5'
+);
+
 
 
 INSERT INTO stations (stationId, name) VALUES (1, 'Coolmine');
@@ -27,6 +53,7 @@ INSERT INTO lines (lineId, name) VALUES (4, 'Yellow Line');
 INSERT INTO segments (station1Id, station2Id) VALUES (1, 2);
 INSERT INTO segments (station1Id, station2Id) VALUES (2, 3);
 INSERT INTO segments (station1Id, station2Id) VALUES (2, 5);
+INSERT INTO segments (station1Id, station2Id) VALUES (3, 4);
 INSERT INTO segments (station1Id, station2Id) VALUES (4, 5);
 INSERT INTO segments (station1Id, station2Id) VALUES (5, 6);
 INSERT INTO segments (station1Id, station2Id) VALUES (6, 7);
@@ -50,6 +77,7 @@ INSERT INTO line_stations (lineId, stationId) VALUES (2, 9);
 INSERT INTO line_stations (lineId, stationId) VALUES (3, 1);
 INSERT INTO line_stations (lineId, stationId) VALUES (3, 2);
 INSERT INTO line_stations (lineId, stationId) VALUES (3, 3);
+INSERT INTO line_stations (lineId, stationId) VALUES (3, 4);
 
 INSERT INTO line_stations (lineId, stationId) VALUES (4, 4);
 INSERT INTO line_stations (lineId, stationId) VALUES (4, 10);
