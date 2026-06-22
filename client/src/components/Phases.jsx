@@ -134,14 +134,16 @@ export function PlanningPhase({ assignment, segments, onSubmitRoute, timeLimit }
 }
 
 function EventCard({ description, effect }) {
+    const isPositive = effect >= 0;
     return (
-        <div className="event-card py-4 mx-5 bg-light border rounded-3 text-center">
-            <p className=" fs-5">{description}</p>
-            <div className="d-inline-flex align-items-center gap-2">
-                <span className={`fs-4 fw-bold ${effect >= 0 ? "text-success" : "text-danger"}`}>
-                    {effect >= 0 ? `+${effect}` : effect}
+        <div className={`event-card p-4 mx-5 border rounded-4 shadow-sm text-center ${isPositive ? 'border-success border-opacity-25' : 'border-danger border-opacity-25'}`}
+            style={{ background: isPositive ? 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)' : 'linear-gradient(135deg, #fef2f2 0%, #ffffff 100%)' }}>
+            <p className="fs-5 fw-medium mb-3">{description}</p>
+            <div className="d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill bg-white border shadow-sm">
+                <span className={`fs-4 fw-bold ${isPositive ? "text-success" : "text-danger"}`}>
+                    {isPositive ? `+${effect}` : effect}
                 </span>
-                <img src="/src/assets/coin.svg" alt="coin" width="28" height="28" />
+                <img src="/src/assets/coin.svg" alt="coin" width="30" height="30" />
             </div>
         </div>
     );
@@ -199,21 +201,20 @@ export function ExecutionPhase({ events, valid, onSeeResult }) {
 
 export function ResultPhase({ finalScore, onPlayAgain }) {
     return (
-        <Container className="d-flex flex-column justify-content-center align-items-center align-self-center gap-4 py-4 mt-5">
-            <Row>
-                <Col className="text-center d-flex align-items-center gap-1">
-                    <h2 className="mb-0">Your final score: {finalScore}</h2>
-                    <img src="/src/assets/coin.svg" alt="coin" width="32" height="32" />
-                </Col>
-            </Row>
-
-            <Row>
-                <Col className="text-center">
-                    <Button size="lg" className="btn-accent" onClick={onPlayAgain}>
-                        Start New Game
+        <Container className="d-flex flex-column justify-content-center align-items-center py-5">
+            <div className="text-center p-5 border rounded-4 shadow-sm bg-white mt-5" style={{ maxWidth: '480px' }}>
+                <h2 className="fw-semibold mb-1">Game Over</h2>
+                <p className="text-muted mb-4">Here is your final score.</p>
+                <div className="d-inline-flex align-items-center gap-3 px-4 py-3 rounded-4 bg-light border mb-4">
+                    <span className="display-6 fw-bold">{finalScore}</span>
+                    <img src="/src/assets/coin.svg" alt="coin" width="40" height="40" />
+                </div>
+                <div>
+                    <Button size="lg" className="btn-accent px-5" onClick={onPlayAgain}>
+                        Play Again
                     </Button>
-                </Col>
-            </Row>
+                </div>
+            </div>
         </Container>
     );
 

@@ -9,43 +9,45 @@ import API from "./API.js";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Checking if the user is already logged-in
-        // This useEffect is called only the first time the component is mounted (i.e., when the page is (re)loaded.)
         API.getUserInfo()
-            .then(() => {
+            .then((user) => {
                 setLoggedIn(true);
+                setUser(user);
             }).catch(() => {
                 setLoggedIn(false);
+                setUser(null);
             });
     }, []);
 
 
     const handleLogin = async (credentials) => {
-        await API.logIn(credentials);
+        const user = await API.logIn(credentials);
         setLoggedIn(true);
+        setUser(user);
     };
 
     const handleLogout = async () => {
         await API.logOut();
         setLoggedIn(false);
+        setUser(null);
     };
-
 
     return (
         <div className="d-flex flex-column h-100">
             <Routes>
-                <Route path="/" element={!loggedIn ? <PublicPage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/game' />} />
+                <Route path="/" element={!loggedIn ? <PublicPage /> : <Navigate replace to='/game' />} />
                 <Route path="/login" element={
                     loggedIn ? <Navigate replace to='/game' />
                         : <LoginForm login={handleLogin} />
                 } />
                 <Route path="/game" element={
-                    loggedIn ? <GamePage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/' />
+                    loggedIn ? <GamePage user={user} logout={handleLogout} /> : <Navigate replace to='/' />
                 } />
                 <Route path="/scoreboard" element={
-                    loggedIn ? <ScoreboardPage loggedIn={loggedIn} logout={handleLogout} /> : <Navigate replace to='/' />
+                    loggedIn ? <ScoreboardPage user={user} logout={handleLogout} /> : <Navigate replace to='/' />
                 } />
                 <Route path="*" element={<Navigate replace to='/' />} />
             </Routes>

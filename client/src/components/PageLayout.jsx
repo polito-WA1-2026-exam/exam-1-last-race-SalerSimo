@@ -67,7 +67,7 @@ export function PublicPage() {
 
 
 
-export function GamePage(props) {
+export function GamePage({ user, logout }) {
     const navigate = useNavigate();
 
     const [phase, setPhase] = useState(PHASES.SETUP);
@@ -121,7 +121,7 @@ export function GamePage(props) {
 
     return (
         <div className="d-flex flex-column h-100" >
-            <Header loggedIn={props.loggedIn} logout={props.logout} onClickTitle={onClickTitle} />
+            <Header loggedIn={true} user={user} logout={logout} onClickTitle={onClickTitle} />
             <div className="d-flex">
                 {phase === PHASES.SETUP && (
                     <SetupPhase onReady={handleReadyToPlay} />
@@ -154,7 +154,7 @@ export function GamePage(props) {
     );
 }
 
-export function ScoreboardPage({ loggedIn, logout }) {
+export function ScoreboardPage({ user, logout }) {
     const navigate = useNavigate();
 
     const [scores, setScores] = useState([]);
@@ -171,7 +171,7 @@ export function ScoreboardPage({ loggedIn, logout }) {
 
     return (
         <div>
-            <Header loggedIn={loggedIn} logout={logout} onClickTitle={onClickTitle} />
+            <Header loggedIn={true} user={user} logout={logout} onClickTitle={onClickTitle} />
             <Container className="py-4">
                 <Row className="mb-4">
                     <Col className="text-center">
