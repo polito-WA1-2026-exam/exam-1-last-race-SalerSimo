@@ -96,8 +96,8 @@ export function GamePage({ user, logout }) {
 
         setValidRoute(result.valid);
         setEvents(result.events || []);
+        setFinalScore(result.finalScore || 0);
         if (result.valid) {
-            setFinalScore(result.finalScore || 0);
             setPhase(PHASES.EXECUTION);
         }
         else {
