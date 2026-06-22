@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Alert, Button, Card, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from "prop-types";
+import Header from './Header';
 import '../App.css';
 
 
@@ -45,42 +46,45 @@ function LoginForm(props) {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center min-vh-100 p-3">
-            <Card className="login-card shadow rounded-3 p-4 w-100" style={{ maxWidth: 420 }}>
-                <h1 className="h3 text-center mb-1">Welcome back</h1>
-                <p className="text-center text-muted mb-4">Sign in to your account</p>
-                <Form onSubmit={handleSubmit}>
-                    <Alert
-                        dismissible
-                        show={show}
-                        onClose={() => setShow(false)}
-                        variant="danger">
-                        {errorMessage}
-                    </Alert>
-                    <Form.Group className="mb-3" controlId="username">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={username}
-                            placeholder="Enter your username"
-                            onChange={(ev) => setUsername(ev.target.value)}
-                            required={true}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            value={password}
-                            placeholder="Enter your password"
-                            onChange={(ev) => setPassword(ev.target.value)}
-                            required={true}
-                            minLength={6}
-                        />
-                    </Form.Group>
-                    <Button type="submit" className="w-100">Sign In</Button>
-                </Form>
-            </Card>
+        <div>
+            <Header loggedIn={false} />
+            <div className="d-flex justify-content-center align-items-center h-100">
+                <Card className="login-card shadow rounded-3 p-4 w-100 mt-5" style={{ maxWidth: 420 }}>
+                    <h1 className="h3 text-center mb-1">Welcome back</h1>
+                    <p className="text-center text-muted mb-4">Sign in to your account</p>
+                    <Form onSubmit={handleSubmit}>
+                        <Alert
+                            dismissible
+                            show={show}
+                            onClose={() => setShow(false)}
+                            variant="danger">
+                            {errorMessage}
+                        </Alert>
+                        <Form.Group className="mb-3" controlId="username">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={username}
+                                placeholder="Enter your username"
+                                onChange={(ev) => setUsername(ev.target.value)}
+                                required={true}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                value={password}
+                                placeholder="Enter your password"
+                                onChange={(ev) => setPassword(ev.target.value)}
+                                required={true}
+                                minLength={6}
+                            />
+                        </Form.Group>
+                        <Button type="submit" className="w-100">Sign In</Button>
+                    </Form>
+                </Card>
+            </div>
         </div>
     )
 }
